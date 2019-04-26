@@ -1,0 +1,569 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>业务员-终审上传资料</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/muimin.css" />
+    <link rel="stylesheet" type="text/css" href="../css/finalupcss.css" />
+    <style media="screen">
+
+    </style>
+</head>
+
+<body>
+
+    <header style="display:flex;flex-direction:column-reverse;" class="buy_car_wrap00 mui-bar" id="header">
+        <div style="width:100%;height:60px;display:flex;justify-content:space-around;align-items:center;">
+            <div class="buy_car_arrowl" onclick="api.closeWin()"></div>
+            <div style="height:100%;width:65%;display:flex;align-items:center;justify-content:center;">上传终审资料</div>
+            <div></div>
+        </div>
+    </header>
+
+    <div class="z" id="z" style="margin-bottom:50px;">
+
+    </div>
+
+    <nav class="mui-bar mui-bar-tab nav" id="nav" onclick="updata()" style="width:100%;height:50px;display:flex;justify-content: center;align-items: center;">
+        <div style="height:50px;display:flex;justify-content: center;align-items: center;">提交</div>
+    </nav>
+
+    <div style="display:none;background-color:black;opacity: 0.9;position:absolute;z-index:9999!important;height:100%;width:100%" id="bigpic">
+        <img src="" alt="" style="height: 45%;width: 98%;margin-top:50%;border-radius: 4px;opacity: 1;">
+    </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/jquerymin.js"></script>
+<script type="text/javascript" src="../script/muimin.js"></script>
+<script type="text/javascript" src="../script/finalup.js"></script>
+<script>
+    var user_id = $api.getStorage('user_id');
+    var str0;
+    var biaotiid;
+    var xinstr = [];
+    var altimgArr = [];
+    var list = [];
+    var types;
+    var video_vi;
+
+
+    // var dd = '20180508171316363781'
+    apiready = function() {
+        upnames = api.pageParam.upname;
+        upnums = api.pageParam.upnum;
+        console.log(JSON.stringify(upnames));
+        console.log(JSON.stringify(upnums));
+        // zsreceive();
+
+        xin();
+
+        //加红点
+        var newdiv = '<div style="color:red;">*</div>';
+        // $('.top').prepend(newdiv);
+    };
+
+    function xin() {
+        api.ajax({
+            url: 'http://xxxxx/index/repay/getRepayDataNew',
+            method: 'post',
+            data: {
+                values: {
+                    order_id: upnames
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log(JSON.stringify(ret.data));
+                var retData = ret.data;
+                console.log(retData.length);
+
+                for (var i = 0; i < retData.length; i++) {
+                    // console.log(JSON.stringify(retData[i].list_content))
+                    var means = retData[i].list_content
+
+
+                    // xinstr.length = 0;
+                    for (var j = 0; j < means.length; j++) {
+                        // console.log(JSON.stringify(means[j].material_content[0].name))
+                        var biaoti = means[j].material_content[0].name;
+
+                        var tj = means[j].material_content;
+                        // console.log(JSON.stringify(tj.length));
+                        biaotiid = means[j].material_id;
+                        types = means[j].type;
+
+
+                        xinstr.push(biaotiid)
+
+                        var biaoti_html = ''
+                        biaoti_html += '<div class="fangku2">' +
+                            '<div class="customer">' +
+                            '<div class="top">' + biaoti + '</div>' +
+                            '<div class="kuang">' +
+
+
+                            '<div class="img">' +
+                            '<div style="margin:5px;" class="po" id="' + biaotiid + '" onclick="add(' + biaotiid + ',' + types + ',this)">' +
+                            '<img src="../icon/add.png" alt="" id="">' +
+                            '<div class="tzi" >添加</div>' +
+                            '</div>' +
+                            '</div>' +
+
+
+                            '<div class="c"></div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+
+                        $('#z').append(biaoti_html);
+
+
+                        for (var z = 0; z < tj.length; z++) {
+                            // console.log(JSON.stringify(tj));
+                            var pss = tj[z].material_path;
+                            var wipelater = pss.replace(/http:\/\/[^\/]*/g, "").replace(/\"/g, "");
+                            str0 = pss.substring(pss.length - 5, pss.length - 9);
+                            var str = pss.substring(pss.length - 4, pss.length - 9);
+                            var pic_html = '';
+                            if (types == 3) {
+                                pic_html += '<div style="margin:5px;" id="' + biaotiid + '" class="' + biaotiid + '">' +
+                                    '<img src="../icon/sp.png" alt="' + wipelater + '" id="' + str + '" name="' + pss + '" onclick="play(this,0)">' +
+                                    '<div class="tzi" style="color:red" onclick="deletePic(\'' + wipelater + '\',this)">删除</div>' +
+                                    '</div>'
+                            } else {
+                                pic_html += '<div style="margin:5px;" id="' + biaotiid + '" class="' + biaotiid + '">' +
+                                    '<img src="' + tj[z].material_path + '" alt="' + wipelater + '" id="' + str + '" onclick="enlarge(this)">' +
+                                    '<div class="tzi" style="color:red" onclick="deletePic(\'' + wipelater + '\',this)">删除</div>' +
+                                    '</div>'
+                            }
+
+                            if (tj[z].material_path != '') {
+                                $('#' + biaotiid + '').before(pic_html);
+                            }
+
+
+                            var altimg = $('#' + str0 + '').children('img').attr("alt");
+
+                            // console.log(altimg);
+                            altimgArr.push(altimg);
+                            list.push({
+                                [biaotiid]: wipelater
+                            })
+
+                        }
+
+                    }
+
+                }
+
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+    }
+
+    //操作数组
+    function scy(roomNames) {
+        // console.log(roomNames);
+        // console.log(roomNames.length);
+        allRoom = {};
+        if (roomNames.length > 0) {
+            for (var i = 0; i < roomNames.length; i++) {
+                var map = roomNames[i];
+                // console.log($api.strToJson(map));
+                for (var k in map) {
+                    // console.log(k+','+map[k]);
+                    if (k != null && k != 'null') {
+                        if (allRoom.hasOwnProperty(k)) { //true
+                            allRoom[k] += ',' + map[k];
+                        } else {
+                            allRoom[k] = map[k];
+                        }
+                    }
+                }
+            }
+        }
+        // console.log(JSON.stringify(allRoom));
+        // list.push(allRoom)
+    }
+
+    //播放
+    function play(thisVid, szi) {
+        if (szi == 0) {
+            var thVideo = thisVid.parentNode.firstChild.name;
+            console.log(thVideo);
+            api.openVideo({
+                url: thVideo
+            });
+        } else {
+            //'fs://res/1.mp4'  /storage/emulated/0/相机/video_20190325_131837.mp4
+            var thVideo = thisVid.parentNode.firstChild.name;
+
+            var urls = 'http://xxxxxx/' + thVideo;
+            api.openVideo({
+                url: urls
+            });
+
+            console.log();
+        }
+
+    }
+
+
+    //删除图片、视频
+    function deletePic(btid, ever) {
+        // console.log(btid);
+        var strbtid = JSON.stringify(btid);
+        var strlist = JSON.stringify(list);
+        // console.log();
+        for (var i = 0; i < list.length; i++) {
+            var ks = JSON.stringify(list[i]);
+            if (ks.indexOf(strbtid) != -1) {
+                list.splice(i, 1);
+                i--;
+            }
+        }
+        // console.log(JSON.stringify(list));
+        ever.parentNode.parentNode.removeChild(ever.parentNode);
+    }
+
+    //点击图片放大
+    function enlarge(everPic, str0) {
+        // alert('点击放大')
+        var pics = (everPic.parentNode.firstChild.src) || ($('#' + str0 + '').attr('src'));
+        // console.log(pics);
+        $('#bigpic').show();
+        $('.z').hide();
+        $('#bigpic img').attr('src', pics);
+    }
+
+    //添加弹窗
+    function add(biaotiid, typ) {
+        var divlength = $('.img').children('#' + biaotiid + '').length;
+        console.log(divlength);
+
+        if (typ == 1 && divlength >= 2) {
+            api.toast({
+                msg: '本栏只可添加一张图片!',
+                duration: 1000,
+                location: 'middle'
+            });
+        } else {
+
+            if (typ == 3) {
+                api.actionSheet({
+                    cancelTitle: '取消',
+                    buttons: ['视频']
+                }, function(ret, err) {
+                    index = ret.buttonIndex;
+                    // console.log(JSON.stringify(index));
+                    if (ret) {
+                        //  console.log( JSON.stringify( ret ) );
+                        if (index == 1) {
+                            //视频
+                            api.getPicture({
+                                sourceType: 'camera',
+                                // encodingType: 'mp4',
+                                mediaValue: 'video',
+                                videoQuality: 'medium',
+                                saveToPhotoAlbum: true,
+                                destinationType: 'url'
+                            }, function(ret3, err) {
+                                if (ret3) {
+                                    //console.log(JSON.stringify(ret));
+                                    video_vi = ret3.data;
+                                    console.log(JSON.stringify(video_vi));
+                                    // --------------------------------------------
+                                    if (video_vi) {
+                                        uploadVideo(biaotiid, video_vi, typ)
+                                    }
+                                } else {
+                                    console.log(JSON.stringify(err));
+                                }
+                            });
+                        }
+                    } else {
+                        console.log(JSON.stringify(err));
+                    }
+                })
+
+            } else {
+                api.actionSheet({
+                    cancelTitle: '取消',
+                    buttons: ['拍照', '手机相册']
+                }, function(ret, err) {
+                    index = ret.buttonIndex;
+                    if (ret) {
+                        console.log(JSON.stringify(ret));
+                        if (index == 1) {
+                            api.getPicture({
+                                sourceType: 'camera',
+                                encodingType: 'jpg',
+                                mediaValue: 'pic',
+                                destinationType: 'url',
+                                allowEdit: false,
+                                quality: 100,
+                                saveToPhotoAlbum: false
+                            }, function(ret1, err1) {
+                                if (ret1) {
+                                    console.log(JSON.stringify(ret1));
+                                    img_pic1 = ret1.data;
+                                    if (img_pic1) {
+                                        uploadPic(biaotiid, img_pic1, typ);
+                                    }
+                                } else {
+                                    alert(JSON.stringify(err));
+                                }
+                            });
+
+                        } else if (index == 2) {
+                            api.getPicture({
+                                sourceType: 'library',
+                                encodingType: 'png',
+                                mediaValue: 'pic',
+                                destinationType: 'url',
+                                allowEdit: true,
+                                quality: 100,
+                                preview: true,
+                                saveToPhotoAlbum: false
+                            }, function(ret2, err2) {
+                                if (ret2) {
+                                    // console.log(JSON.stringify(ret2));
+                                    img_pic2 = ret2.data;
+                                    if (img_pic2) {
+                                        uploadPic(biaotiid, img_pic2, typ);
+                                    }
+                                } else {
+                                    alert(JSON.stringify(err));
+                                }
+                            });
+                        }
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+            }
+
+        }
+
+    }
+
+    //上传视频
+    function uploadVideo(biaotiid, video_vi, typ) {
+        api.showProgress({
+            title: '加载中...',
+            text: ''
+        });
+        api.ajax({
+            url: 'http://xxxxxxx/index/system/uploadVideo',
+            method: 'post',
+            data: {
+                files: {
+                    video: video_vi
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log( JSON.stringify( ret ) );
+                var uploadVideo_later = ret.data
+
+                // add_video(video_vi, idname, uploadVideo_later);
+                addhtml(biaotiid, video_vi, uploadVideo_later, typ);
+
+                api.hideProgress();
+            } else {
+                console.log(JSON.stringify(err));
+                api.hideProgress();
+            }
+        });
+
+    }
+
+    //上传图片
+    function uploadPic(biaotiid, img_pic, typ) {
+        api.showProgress({
+            style: 'default',
+            animationType: 'fade',
+            title: '努力加载中...',
+            text: '请耐心等待...',
+            modal: false
+        });
+
+        api.ajax({
+            url: 'http://xxxxxxxx/index/system/uploadImg',
+            method: 'post',
+            data: {
+                files: {
+                    image: img_pic
+                }
+            }
+        }, function(ret, err) {
+            if (ret) {
+                // console.log(JSON.stringify(ret));
+                var change = ret.data
+                addhtml(biaotiid, img_pic, change, typ);
+
+                api.hideProgress();
+
+            } else {
+                console.log(JSON.stringify(err));
+                api.hideProgress();
+            }
+        });
+    }
+
+    //动态添加公用函数
+    function addhtml(biaotiid, dynamic, change, typ) {
+        console.log(change);
+        str1 = change.substring(change.length - 4, change.length - 9);
+        var dongtai_html = '';
+
+        if (typ == 3) {
+            console.log(JSON.stringify(dynamic));
+            var vi = JSON.stringify(dynamic);
+            dynamic2 = vi.replace(/\"/g, "").replace(/\[/g, "").replace(/\]/g, "");
+            console.log(dynamic2);
+
+            dongtai_html += '<div style="margin:5px;" id="' + biaotiid + '">' +
+                '<img src="../icon/sp.png" alt="' + change + '"  name="' + change + '" onclick="play(this,1)">' +
+                '<div class="tzi" style="color:red" onclick="deletePic(\'' + change + '\',this)">删除</div>' +
+                '</div>'
+        } else {
+            dongtai_html += '<div style="margin:5px;display:block;"   id="' + biaotiid + '">' +
+                '<img onclick="enlarge(this);" src="' + dynamic + '" alt="' + change + '">' +
+                '<div class="tzi" onclick="deletePic(\'' + change + '\',this);" style="color:red;">删除' +
+                '</div>' +
+                '</div>'
+        }
+
+        $('#' + biaotiid + '').before(dongtai_html);
+
+        // console.log($('#z').html());
+        list.push({
+            [biaotiid]: change
+        });
+        // console.log(JSON.stringify(list));
+    }
+
+    //提交
+    function updata() {
+        // arrClass();
+        var dialogBox = api.require('dialogBox');
+        dialogBox.alert({
+            texts: {
+                title: '提示',
+                content: '您确定提交所有内容吗？',
+                leftBtnTitle: '取消',
+                rightBtnTitle: '确认'
+            },
+            styles: {
+                bg: '#fff',
+                w: 300,
+                corner: 2,
+                title: {
+                    marginT: 20,
+                    icon: 'widget://res/gou.png',
+                    iconSize: 40,
+                    titleSize: 22,
+                    titleColor: '#000'
+                },
+                content: {
+                    color: '#000',
+                    size: 16
+                },
+                left: {
+                    marginB: 7,
+                    marginL: 20,
+                    w: 130,
+                    h: 35,
+                    corner: 2,
+                    bg: '#fff',
+                    color: '#F3544E',
+                    size: 14
+                },
+                right: {
+                    marginB: 7,
+                    marginL: 10,
+                    w: 130,
+                    h: 35,
+                    corner: 2,
+                    bg: '#fff',
+                    color: '#F3544E',
+                    size: 14
+                }
+            }
+        }, function(ret) {
+            if (ret.eventType == 'left') {
+                //取消
+                var dialogBox = api.require('dialogBox');
+                dialogBox.close({
+                    dialogName: 'alert'
+                });
+
+            } else if (ret.eventType == 'right') {
+                //确定
+                var dialogBox = api.require('dialogBox');
+                dialogBox.close({
+                    dialogName: 'alert'
+                });
+
+                var orid = {
+                    order_id: upnames
+                }
+                list.push(orid);
+                scy(list);
+                console.log(JSON.stringify(allRoom));
+
+
+                //数据提交
+                api.ajax({
+                    url: 'http://xxxxxxx/index/repay/dataUploadNew',
+                    method: 'post',
+                    data: {
+                        values: allRoom
+                    }
+                }, function(ret, err) {
+                    if (ret) {
+                        console.log(JSON.stringify(ret));
+                        // api.closeWin({});
+                        //退出
+                        api.openWin({
+                            name: 'tab',
+                            url: './tab.html',
+                            reload: true
+                        });
+                        //刷新
+                        api.sendEvent({
+                            name: 'ywydsx',
+                            extra: {
+                                key0: 'y'
+                            }
+                        });
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+
+            }
+        });
+
+    }
+
+
+    // function arrClass() {
+    //     console.log(biaotiid);
+    //     $('.' + biaotiid + '').each(function() {
+    //         console.log($(this).children('img').attr("alt"));
+    //     });
+    // }
+</script>
+
+</html>
