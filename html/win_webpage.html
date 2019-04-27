@@ -57,7 +57,21 @@
 <script type="text/javascript" src="../script/jquery-3.4.0.min.js"></script>
 <script type="text/javascript">
     var videoPlayer;
+    var timeOut = 0;
+    var moviePlayer;
     apiready = function(){
+        videoPlayer = api.require('videoPlayer');
+        moviePlayer = api.require('moviePlayer');
+        videoPlayer.addEventListener({
+            name:'swipeLeft'
+        }, function(ret, err){
+            if( ret ){
+                alert( JSON.stringify( ret ) );
+            }else{
+                alert( JSON.stringify( err ) );
+            }
+        });
+
         $api.fixStatusBar( $api.dom('header') );
         $api.dom('.title').innerHTML = api.pageParam.name;
         //获取树结构的章节
@@ -165,30 +179,42 @@
         });
     }
 
+    // function fnPlay(urlname){
+    //     videoPlayer.play({
+    //         texts: {
+    //             head: {
+    //                 title: '顶部文字'
+    //             }
+    //         },
+    //         styles: {
+    //             head: {
+    //                 bg: 'rgba(0.5,0.5,0.5,0.7)',
+    //                 height: 44,
+    //                 titleSize: 16,
+    //                 titleColor: '#fff',
+    //                 backSize: 20,
+    //                 backImg: 'widget://image/back.png',
+    //                 setSize: 20,
+    //                 setImg: 'widget://image/set.png'
+    //             },
+    //
+    //         },
+    //         path: 'widget://vedio/'+urlname,
+    //         autoPlay:true
+    //     },function(ret, err) {
+    //     });
+    // }
     function fnPlay(urlname){
-        var videoPlayer = api.require('videoPlayer');
-        videoPlayer.play({
-            texts: {
-                head: {
-                    title: '顶部文字'
-                }
-            },
-            styles: {
-                head: {
-                    bg: 'rgba(0.5,0.5,0.5,0.7)',
-                    height: 44,
-                    titleSize: 16,
-                    titleColor: '#fff',
-                    backSize: 20,
-                    backImg: 'widget://image/back.png',
-                    setSize: 20,
-                    setImg: 'widget://image/set.png'
-                },
+      api.openWin({
+          name: 'movieplayer',
+          url: 'movieplayer.html',
+          rect: {
+              x: 0,
+              y: $api.dom('header').offsetHeight,
+              w: api.winWidth,
+              h: $api.dom('#main').offsetHeight
+          }
+      });
+      }
 
-            },
-            path: 'widget://vedio/'+urlname,
-            autoPlay:true
-        },function(ret, err) {
-        });
-    }
 </script>

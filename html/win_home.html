@@ -59,7 +59,7 @@
                         <p>交通法规及相关知识</p>
                      </div>
                  </div>
-                 <div tapmode="hover" onclick="funOpenArticle( this,2 );"  class="flex-wrap flex-con flex-2 layout-wrap">
+                 <div tapmode="hover" onclick="funOpenArticle2( this,2 );"  class="flex-wrap flex-con flex-2 layout-wrap">
                      <div class="flex-con layout ic-tag">
                        <input type="hidden" value="1"/>
                         <h6>科目二</h6>
@@ -123,6 +123,17 @@
         api.openWin({
             name: 'test',
             url: './test1.html',
+            pageParam: {
+                name: tag.querySelector('h6').innerHTML,
+                project: tag.querySelector('input').innerHTML
+           }
+        });
+    }
+
+    function funOpenArticle2( tag ){
+        api.openWin({
+            name: 'test',
+            url: './test2.html',
             pageParam: {
                 name: tag.querySelector('h6').innerHTML,
                 project: tag.querySelector('input').innerHTML

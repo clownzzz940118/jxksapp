@@ -47,7 +47,7 @@
     </body>
 </html>
 <script type="text/javascript">
-    var videoPlayer;
+    var videoPlayer,timeOut;
     apiready = function() {
         videoPlayer = api.require('videoPlayer');
     };
@@ -72,17 +72,48 @@
                 },
 
             },
+            autorotation:false,
             path: 'http://resource.apicloud.com/video/apicloud3.mp4',
             autoPlay:true
         },function(ret, err) {
-             alert(JSON.stringify(ret));
             if (ret) {
-                alert(JSON.stringify(ret));
+              if(ret.eventType=="play"){
+                console.log("msg:开始播放视频");
+                timeOutAlert();
+              }
+
             } else {
                 alert(JSON.stringify(err));
             }
         });
     }
+    //添加定时器判断是否为登陆用户和会员
+    function addM() {
+      console.log("msg:暂停");
+      videoPlayer.pause();
+    }
+
+    function timeOutAlert(){
+      console.log("msg:开始定时任务");
+        timeOut = window.setTimeout(function(){
+          console.log("timeCut:"+timeOut);
+          if(3==timeOut){
+            console.log("msg:开始停止视频");
+            addM();
+            stopTimeOutAlert()
+          }else{
+            timeOutAlert();
+          }
+        },1000);
+    }
+
+    function stopTimeOutAlert(){
+       timeOut = 0;
+        window.clearTimeout(timeOut);
+    }
+
+
+
     function fnOpen(){
         videoPlayer.open({
             rect:{
@@ -93,7 +124,10 @@
             path: 'http://resource.apicloud.com/video/apicloud3.mp4'
         }, function(ret, err){
             if( ret.status ){
-                alert( JSON.stringify( ret ) );
+              if(ret.eventType=="show"){
+                console.log("msg:开始播放视频");
+                timeOutAlert();
+              }
             }else{
                 alert( JSON.stringify( err ) );
             }
