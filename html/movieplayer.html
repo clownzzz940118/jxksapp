@@ -1,116 +1,120 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
-		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title>title</title>
-		<link rel="stylesheet" type="text/css" href="../css/api.css"/>
-		<style>
 
-		</style>
-	</head>
-	<body>
-		<a class="button" tapmode="active" onclick="fnOpen()">打开</a>
-	</body>
-	<script type="text/javascript" src="../script/api.js"></script>
-	<script type="text/javascript">
-		var videoPlayer,timeOut;
-		apiready = function() {
-			videoPlayer = api.require('videoPlayer');
-      fnOpen();
-		};
-		function fnOpen() {
-      videoPlayer.openPlay({
-          rect:
-            {   x : 0,
-                y : 0,
-                w : "auto",
-                h : "auto"
-            },
-            texts: {
-                head: {
-                    title: '顶部文字'
-                }
-            },
-            styles: {
-                head: {
-                    bg: 'rgba(0.5,0.5,0.5,0.7)',
-                    height: 44,
-                    y:20,
-                    titleSize: 20,
-                    titleColor: '#fff',
-                    backSize: 24,
-                    backImg: 'fs://img/back.png',
-                    customButtons:[],
-                },
-                foot: {
-                    bg: 'rgba(0.5,0.5,0.5,0.7)',
-                    height: 44,
-                    playSize: 24,
-                    playImg: 'fs://img/paly.png',
-                    pauseImg: 'fs://img/pause.png',
-                    timeSize: 14,
-                    timeColor: '#fff',
-                    sliderImg: 'fs://img/slder.png',
-                    progressColor: '#696969',
-                    progressSelected: '#76EE00',
-                    verticalImg:'widget://image/vertical.png',
-                    horizontalImg:'widget://image/vertical.png',
-                }
-            },
-            autorotation:true,
-            path: 'widget://vedio/test.mp4', //（可选项）字符串类型；文档的路径，支持网络和本地（fs://）路径；默认：未传值时不播放
-            //在 android 平台上不支持 widget://
-            autoPlay: true //（可选项）布尔类型；打开时是否自动播放；默认：true（自动播放）
-        }, function(ret, err) {
-            if (ret) {
-              if(ret.eventType=="back"){
-                api.closeWin({
-                    name: 'movieplayer'
-                });
-              }else if(ret.eventType=="show"){
-                timeOutAlert();
-              }
-            } else {
-                alert(JSON.stringify(err));
-            }
-        });
-		}
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>title</title>
+	<link rel="stylesheet" type="text/css" href="../css/api.css" />
+	<style>
 
-		function fnAddEventListener() {
-			videoPlayer.addEventListener({
-				name : 'play'
-			}, function(ret, err) {
-				if (ret) {
-					console.log(JSON.stringify(ret));
-				} else {
-					alert(JSON.stringify(err));
+	</style>
+</head>
+
+<body>
+	<a class="button" tapmode="active" onclick="fnOpen()">打开</a>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	var videoPlayer, timeOut;
+	apiready = function() {
+		videoPlayer = api.require('videoPlayer');
+		fnOpen();
+	};
+
+	function fnOpen() {
+		videoPlayer.openPlay({
+			rect: {
+				x: 0,
+				y: 0,
+				w: "auto",
+				h: "auto"
+			},
+			texts: {
+				head: {
+					title: '顶部文字'
 				}
-			});
-		}
+			},
+			styles: {
+				head: {
+					bg: 'rgba(0.5,0.5,0.5,0.7)',
+					height: 44,
+					y: 20,
+					titleSize: 20,
+					titleColor: '#fff',
+					backSize: 24,
+					backImg: 'fs://img/back.png',
+					customButtons: [],
+				},
+				foot: {
+					bg: 'rgba(0.5,0.5,0.5,0.7)',
+					height: 44,
+					playSize: 24,
+					playImg: 'fs://img/paly.png',
+					pauseImg: 'fs://img/pause.png',
+					timeSize: 14,
+					timeColor: '#fff',
+					sliderImg: 'fs://img/slder.png',
+					progressColor: '#696969',
+					progressSelected: '#76EE00',
+					verticalImg: 'widget://image/vertical.png',
+					horizontalImg: 'widget://image/vertical.png',
+				}
+			},
+			autorotation: true,
+			path: 'widget://vedio/test.mp4', //（可选项）字符串类型；文档的路径，支持网络和本地（fs://）路径；默认：未传值时不播放
+			//在 android 平台上不支持 widget://
+			autoPlay: true //（可选项）布尔类型；打开时是否自动播放；默认：true（自动播放）
+		}, function(ret, err) {
+			if (ret) {
+				if (ret.eventType == "back") {
+					api.closeWin({
+						name: 'movieplayer'
+					});
+				} else if (ret.eventType == "show") {
+					timeOutAlert();
+				}
+			} else {
+				alert(JSON.stringify(err));
+			}
+		});
+	}
 
-    function timeOutAlert(){
-      console.log("msg:开始定时任务");
-        timeOut = window.setTimeout(function(){
-          console.log("timeCut:"+timeOut);
-          if(3==timeOut){
-            console.log("msg:开始停止视频");
-						videoPlayer.onPause();
-            stopTimeOutAlert();
-          }else{
-            timeOutAlert();
-          }
-        },1000);
-    }
+	function fnAddEventListener() {
+		videoPlayer.addEventListener({
+			name: 'play'
+		}, function(ret, err) {
+			if (ret) {
+				console.log(JSON.stringify(ret));
+			} else {
+				alert(JSON.stringify(err));
+			}
+		});
+	}
 
-    function stopTimeOutAlert(){
-       timeOut = 0;
-        window.clearTimeout(timeOut);
-    }
+	function timeOutAlert() {
+		console.log("msg:开始定时任务");
+		timeOut = window.setTimeout(function() {
+			console.log("timeCut:" + timeOut);
+			if (3 == timeOut) {
+				console.log("msg:开始停止视频");
+				videoPlayer.onPause();
+				stopTimeOutAlert();
+			} else {
+				timeOutAlert();
+			}
+		}, 1000);
+	}
 
-		function checkVip(){
+	function stopTimeOutAlert() {
+		timeOut = 0;
+		window.clearTimeout(timeOut);
+	}
 
-		}
-	</script>
+	function checkVip() {
+
+	}
+</script>
+
 </html>

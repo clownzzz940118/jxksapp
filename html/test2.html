@@ -1,24 +1,28 @@
 <html>
-    <head></head>
-    <body>
-        <p id="timer"></p>
-        <div>
-            <button id="cutTimer" onclick="timeOutAlert();">执行</button>
-            <button id="cutTimer" onclick="stopTimeOutAlert();">停止</button>
-        </div>
-        <script>
-            timeOut = null;
-            function timeOutAlert(){
-                timeOut = window.setTimeout(function(){
-                    console.log("time out..."+timeOut);
-                    timeOutAlert();
-                },1000);
-            }
 
-            function stopTimeOutAlert(){
-                console.log("timeCut:"+timeOut);
-                window.clearTimeout(timeOut);
-            }
-        </script>
-    </body>
+<head></head>
+
+<body>
+    <p id="timer"></p>
+    <div>
+        <button id="cutTimer" onclick="timeOutAlert();">执行</button>
+        <button id="cutTimer" onclick="stopTimeOutAlert();">停止</button>
+    </div>
+    <script>
+        timeOut = null;
+
+        function timeOutAlert() {
+            timeOut = window.setTimeout(function() {
+                console.log("time out..." + timeOut);
+                timeOutAlert();
+            }, 1000);
+        }
+
+        function stopTimeOutAlert() {
+            console.log("timeCut:" + timeOut);
+            window.clearTimeout(timeOut);
+        }
+    </script>
+</body>
+
 </html>

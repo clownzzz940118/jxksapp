@@ -1,56 +1,122 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>title</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
     <link rel="stylesheet" type="text/css" href="../css/style.css" />
     <style>
-        header{ background-color: #FCFCFC; line-height: 42px; height: 42px; position: relative; }
-        header b{ width: 42px; height: 100%; display: inline-block; position: relative; z-index: 1; background: url() no-repeat center; background-size: 70% auto;  }
-        header b.ic-back{ background-image: url(../image/ic-back.png); }
-        header b.ic-check{ background-image: url(../image/ic-check.png); float: right; }
-        header .title{ position: absolute; left: 0; bottom: 0; right: 0;  text-align: center; font-size: 18px;  }
+        header {
+            background-color: #FCFCFC;
+            line-height: 42px;
+            height: 42px;
+            position: relative;
+        }
 
-        #main{ padding: 2px; background-color: #e5e5e5;  }
-        #main .flex-vertical .layout{ background:#e66961 url() right bottom no-repeat; margin: .3rem;  padding: .3rem; background-size: auto 50%; line-height: 2rem;  color: white; font-size: 1.8rem; }
-        #main .flex-vertical .layout p{ font-size: 1rem; }
-        .flex-2{ -webkit-box-flex: 4;     -webkit-flex: 4;    flex: 4; }
-        .flex-1{ -webkit-box-flex: 1;     -webkit-flex: 1;    flex: 1; }
-        .chapter{font-size: 1.3rem;}
-        .section{font-size: 1.3rem;}
-        .course{text-indent:3rem}
+        header b {
+            width: 42px;
+            height: 100%;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+            background: url() no-repeat center;
+            background-size: 70% auto;
+        }
+
+        header b.ic-back {
+            background-image: url(../image/ic-back.png);
+        }
+
+        header b.ic-check {
+            background-image: url(../image/ic-check.png);
+            float: right;
+        }
+
+        header .title {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        #main {
+            padding: 2px;
+            background-color: #e5e5e5;
+        }
+
+        #main .flex-vertical .layout {
+            background: #e66961 url() right bottom no-repeat;
+            margin: .3rem;
+            padding: .3rem;
+            background-size: auto 50%;
+            line-height: 2rem;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        #main .flex-vertical .layout p {
+            font-size: 1rem;
+        }
+
+        .flex-2 {
+            -webkit-box-flex: 4;
+            -webkit-flex: 4;
+            flex: 4;
+        }
+
+        .flex-1 {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+        }
+
+        .chapter {
+            font-size: 1.3rem;
+        }
+
+        .section {
+            font-size: 1.3rem;
+        }
+
+        .course {
+            text-indent: 3rem
+        }
     </style>
     </style>
 </head>
+
 <body>
-  <div id="wrap" class="flex-wrap flex-vertical" >
-        <header class="border-b" >
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="border-b">
             <b tapmode="hover" onclick="api.closeWin();" class="ic-back"></b>
             <div class="title"></div>
-            <b tapmode="hover" onclick="funActionSheet();"  class="ic-check"></b>
+            <b tapmode="hover" onclick="funActionSheet();" class="ic-check"></b>
         </header>
-    <div id="main" class="flex-wrap flex-con flex-1" >
+        <div id="main" class="flex-wrap flex-con flex-1">
             <div class="flex-con flex-wrap flex-vertical flex-1">
-                <div  class="flex-wrap flex-con flex-2 layout-wrap">
+                <div class="flex-wrap flex-con flex-2 layout-wrap">
                     <div id="chapters" class="flex-con layout ">
-                       <!-- <h6 onclick="">第一章</h6> -->
+                        <!-- <h6 onclick="">第一章</h6> -->
                     </div>
                 </div>
             </div>
             <div class="flex-wrap flex-con flex-vertical flex-2">
-                <div  class="flex-wrap flex-con flex-2 layout-wrap">
-                  <input type="hidden" id="lastSection" />
+                <div class="flex-wrap flex-con flex-2 layout-wrap">
+                    <input type="hidden" id="lastSection" />
                     <div id="sections" class="flex-con layout ">
-                       <!-- <a onclick="fnPlay()" >驾驶证的许可、种类和有效期</a> -->
+                        <!-- <a onclick="fnPlay()" >驾驶证的许可、种类和有效期</a> -->
                     </div>
                 </div>
-          </div>
+            </div>
+        </div>
     </div>
-  </div>
 </body>
+
 </html>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/server.js"></script>
@@ -59,123 +125,135 @@
     var videoPlayer;
     var timeOut = 0;
     var moviePlayer;
-    apiready = function(){
+    apiready = function() {
         videoPlayer = api.require('videoPlayer');
         moviePlayer = api.require('moviePlayer');
         videoPlayer.addEventListener({
-            name:'swipeLeft'
-        }, function(ret, err){
-            if( ret ){
-                alert( JSON.stringify( ret ) );
-            }else{
-                alert( JSON.stringify( err ) );
+            name: 'swipeLeft'
+        }, function(ret, err) {
+            if (ret) {
+                alert(JSON.stringify(ret));
+            } else {
+                alert(JSON.stringify(err));
             }
         });
 
-        $api.fixStatusBar( $api.dom('header') );
+        $api.fixStatusBar($api.dom('header'));
         $api.dom('.title').innerHTML = api.pageParam.name;
         //获取树结构的章节
-        getChapterList(api.pageParam.project,1);
+        getChapterList(api.pageParam.project, 1);
     };
 
     //获取一个科目下有多少章节
-    function getChapterList(project,chapter){
+    function getChapterList(project, chapter) {
         api.ajax({
-          url: serverIP+"getChapterList",
-          method: 'post',
-          dataType: 'text', //该参数若不传，则默认为json
-          timeout : 30000,
-          data: {
-          values:{project: project} //键值对
+            url: serverIP + "getChapterList",
+            method: 'post',
+            dataType: 'text', //该参数若不传，则默认为json
+            timeout: 30000,
+            data: {
+                values: {
+                    project: project
+                } //键值对
             }
-          },function(ret,err){
-          if (ret) {
-            var obj =  JSON.parse(ret);
-            var html = "";
-            for(var i = 0;i<obj.length;i++){
-              html += "<div id=\"chapter_"+obj[i].chapternum+"\" onclick=\"getSectionList("+project+","+obj[i].chapternum+")\" class = \"chapter\">"+obj[i].chaptername+"</br></div>";
-            }
-            $("#chapters").append(html);
-            getSectionList(project,chapter);
-          } else {
-            api.alert({msg:JSON.stringify(err)});
-          };
+        }, function(ret, err) {
+            if (ret) {
+                var obj = JSON.parse(ret);
+                var html = "";
+                for (var i = 0; i < obj.length; i++) {
+                    html += "<div id=\"chapter_" + obj[i].chapternum + "\" onclick=\"getSectionList(" + project + "," + obj[i].chapternum + ")\" class = \"chapter\">" + obj[i].chaptername + "</br></div>";
+                }
+                $("#chapters").append(html);
+                getSectionList(project, chapter);
+            } else {
+                api.alert({
+                    msg: JSON.stringify(err)
+                });
+            };
         });
     }
 
     //获取一个章节下有多少节
-    function getSectionList(project,chapter){
+    function getSectionList(project, chapter) {
         //显示新的章节的时候清楚之前显示的所有章节信息
         $("#sections").html("");
         api.ajax({
-          url: serverIP+"getSectionList",
-          method: 'post',
-          dataType: 'text', //该参数若不传，则默认为json
-          timeout : 30000,
-          data: {
-          values:{project: project,
-                  chapter: chapter} //键值对
+            url: serverIP + "getSectionList",
+            method: 'post',
+            dataType: 'text', //该参数若不传，则默认为json
+            timeout: 30000,
+            data: {
+                values: {
+                    project: project,
+                    chapter: chapter
+                } //键值对
             }
-          },function(ret,err){
-          if (ret) {
-            var obj =  JSON.parse(ret);
-            var html = "";
-            for(var i = 0;i<obj.length;i++){
-              html += "<div id=\"section_"+obj[i].sectionnum+"\" onclick=\"getCourseList("+project+","+chapter+","+obj[i].sectionnum+")\" class=\"section\" >"+obj[i].sectionname+"</br></div>";
-            }
-            $("#sections").append(html);
-          } else {
-            api.alert({msg:JSON.stringify(err)});
-          };
+        }, function(ret, err) {
+            if (ret) {
+                var obj = JSON.parse(ret);
+                var html = "";
+                for (var i = 0; i < obj.length; i++) {
+                    html += "<div id=\"section_" + obj[i].sectionnum + "\" onclick=\"getCourseList(" + project + "," + chapter + "," + obj[i].sectionnum + ")\" class=\"section\" >" + obj[i].sectionname + "</br></div>";
+                }
+                $("#sections").append(html);
+            } else {
+                api.alert({
+                    msg: JSON.stringify(err)
+                });
+            };
         });
     }
 
-        //获取一个节下有多少视频课
-        function getCourseList(project,chapter,section){
-            var lastSection = $("#lastSection").val();
-            if(null!=lastSection && ""!=lastSection && undefined!=lastSection ){
-                $("#lastSection").val("");
-              $("#section_"+lastSection+" div").each(function(){
+    //获取一个节下有多少视频课
+    function getCourseList(project, chapter, section) {
+        var lastSection = $("#lastSection").val();
+        if (null != lastSection && "" != lastSection && undefined != lastSection) {
+            $("#lastSection").val("");
+            $("#section_" + lastSection + " div").each(function() {
                 $(this).remove();
-              });
-            }
-            if(lastSection!=section){
-              api.ajax({
-                url: serverIP+"getCourseList",
+            });
+        }
+        if (lastSection != section) {
+            api.ajax({
+                url: serverIP + "getCourseList",
                 method: 'post',
                 dataType: 'text', //该参数若不传，则默认为json
-                timeout : 30000,
+                timeout: 30000,
                 data: {
-                values:{project: project,
+                    values: {
+                        project: project,
                         chapter: chapter,
-                        section: section} //键值对
-                  }
-                },function(ret,err){
+                        section: section
+                    } //键值对
+                }
+            }, function(ret, err) {
                 if (ret) {
-                  var obj =  JSON.parse(ret);
-                  var html = "";
-                  for(var i = 0;i<obj.length;i++){
-                    html += "<div class=\"course\" onclick=\"fnPlay(\'"+obj[i].url+"\')\">"+section+"."+obj[i].coursenum+obj[i].coursename+"</br></div>";
-                  }
-                  $("#section_"+section).append(html);
-                  $("#lastSection").val(section);
+                    var obj = JSON.parse(ret);
+                    var html = "";
+                    for (var i = 0; i < obj.length; i++) {
+                        html += "<div class=\"course\" onclick=\"fnPlay(\'" + obj[i].url + "\')\">" + section + "." + obj[i].coursenum + obj[i].coursename + "</br></div>";
+                    }
+                    $("#section_" + section).append(html);
+                    $("#lastSection").val(section);
                 } else {
-                  api.alert({msg:JSON.stringify(err)});
+                    api.alert({
+                        msg: JSON.stringify(err)
+                    });
                 };
-              });
-            }
+            });
         }
+    }
 
-    function funActionSheet(){
+    function funActionSheet() {
         api.actionSheet({
             title: '底部弹出框',
             cancelTitle: '取消',
             destructiveTitle: '红色警告按钮',
-            buttons: ['按钮1','按钮2','按钮3']
-        },function(ret,err){
-          api.alert({
-              msg: '你刚点击了'+ret.buttonIndex
-          });
+            buttons: ['按钮1', '按钮2', '按钮3']
+        }, function(ret, err) {
+            api.alert({
+                msg: '你刚点击了' + ret.buttonIndex
+            });
         });
     }
 
@@ -204,17 +282,16 @@
     //     },function(ret, err) {
     //     });
     // }
-    function fnPlay(urlname){
-      api.openWin({
-          name: 'movieplayer',
-          url: 'movieplayer.html',
-          rect: {
-              x: 0,
-              y: $api.dom('header').offsetHeight,
-              w: api.winWidth,
-              h: $api.dom('#main').offsetHeight
-          }
-      });
-      }
-
+    function fnPlay(urlname) {
+        api.openWin({
+            name: 'movieplayer',
+            url: 'movieplayer.html',
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            }
+        });
+    }
 </script>
