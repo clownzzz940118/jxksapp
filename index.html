@@ -8,7 +8,15 @@
     <link rel="stylesheet" type="text/css" href="./css/api.css" />
     <link rel="stylesheet" type="text/css" href="./css/style.css" />
     <style>
-        header{ background-color: #f2f2f2;  line-height: 42px; font-size: 18px; text-align: center; }
+        /*header{ background-color: #f2f2f2;  line-height: 42px; font-size: 18px; text-align: center; }
+        header b{ width: 42px; height: 100%; display: inline-block; position: relative; z-index: 1; background: url() no-repeat center; background-size: 70% auto;  }
+        header b.ic-check{ background-image: url(../image/ic-check.png); float: right; }
+        header .title{ position: absolute; left: 0; bottom: 0; right: 0;  text-align: center; font-size: 18px;  }*/
+
+        header{ background-color: #FCFCFC; line-height: 42px; height: 42px;font-size: 18px; position: relative; }
+        header b{ width: 42px; height: 100%; display: inline-block; position: relative; z-index: 1; background: url() no-repeat center; background-size: 70% auto;  }
+        header b.ic-check{ background-image: url(image/ic-people.png); float: left; }
+        header .title{ position: absolute; left: 0; bottom: 0; right: 0;  text-align: center; font-size: 18px;  }
         .flex-con{
           overflow: auto
         }
@@ -16,7 +24,10 @@
 </head>
 <body>
     <div id="wrap" class="flex-wrap flex-vertical" >
-        <header class="border-b" >在线学习</header>
+      <header class="border-b" >
+        <b tapmode="hover" onclick="openLogin();" class="ic-check"></b>
+        <div class="title">在线学习</div>
+        </header>
         <div id="main" class="flex-con" >
 
         </div>
@@ -42,4 +53,17 @@
             }
         });
     };
+
+    function openLogin(){
+      api.openWin({
+          name: 'login',
+          url: 'html/login.html',
+          rect: {
+              x: 0,
+              y: $api.dom('header').offsetHeight,
+              w: api.winWidth,
+              h: $api.dom('#main').offsetHeight
+          }
+      });
+    }
 </script>

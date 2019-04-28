@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Signin</title>
+<link href="../css/login_style.css" rel='stylesheet' type='text/css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="App Sign in Form,Login Forms,Sign up Forms,Registration Forms,News latter Forms,Elements"./>
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+</script>
+<!--webfonts-->
+<link href='http://fonts.useso.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+<!--//webfonts-->
+<style>
+header{ background-color: #FCFCFC; line-height: 42px; height: 42px; position: relative; }
+header b{ width: 42px; height: 100%; display: inline-block; position: relative; z-index: 1; background: url() no-repeat center; background-size: 70% auto;  }
+header b.ic-back{ background-image: url(../image/ic-back.png); }
+header b.ic-check{ background-image: url(../image/ic-check.png); float: right; }
+header .title{ position: absolute; left: 0; bottom: 0; right: 0;  text-align: center; font-size: 18px;  }
+
+</style>
+</head>
+<body>
+		<div class="app-cam">
+			<form>
+				<input id = "username" type="text" class="text" value="请输入用户名" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '请输入用户名';}" ></br>
+				<input id = "password" type="password" value="请输入密码" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '请输入密码';}">
+				<div class="submit"><input type="submit" onclick="login()" value="登陆" ></div>
+				<div class="clear"></div>
+				<div class="buttons">
+				</div>
+				<div class="new">
+					<p><a href="#">忘记密码</a></p>
+					<p class="sign"><a href="#" onclick="openRegist();" style="font-size:1rem;"> 注册</a></p>
+				</div>
+			</form>
+		</div>
+</body>
+</html>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/server.js"></script>
+<script type="text/javascript" src="../script/jquery-3.4.0.min.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+
+    };
+    //获取一个科目下有多少章节
+    function login(project,chapter){
+        api.ajax({
+          url: serverIP+"userLogin",
+          method: 'post',
+          dataType: 'text', //该参数若不传，则默认为json
+          timeout : 30000,
+          data: {
+          values:{username: $("#username").val(),
+									password: $("#password").val()} //键值对
+            }
+          },function(ret,err){
+          if (ret) {
+
+          } else {
+            api.alert({msg:JSON.stringify(err)});
+          };
+        });
+    }
+
+		function openRegist(){
+      api.openWin({
+          name: 'regist',
+          url: 'regist.html'
+      });
+    }
+</script>
